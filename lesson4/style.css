@@ -1,0 +1,50 @@
+* {margin: 0; padding: 0;}
+body {margin: 30px; font: 13px/1.5 "Trebuchet MS", Tahoma, Arial;}
+a {color: #0094D6;}
+p {padding: 7px 0;}
+h1 {font-size: 21px; font-weight: normal; margin: 0 0 30px;}
+
+.tabs {
+    width: 600px;
+    background: #EFEFEF;
+    margin: 0 0 30px;
+}
+.tabs__caption {
+    height: 28px;
+    line-height: 25px;
+    list-style: none;
+    border-bottom: 1px solid #DDD;
+    background: #FFF;
+}
+.tabs__caption li {
+    float: left;
+    display: inline;
+    margin: 0 1px -1px 0;
+    padding: 0 13px 1px;
+    color: #777;
+    cursor: pointer;
+    background: #F9F9F9;
+    border: 1px solid #E4E4E4;
+    border-bottom: 1px solid #F9F9F9;
+    position: relative;
+}
+.tabs__caption li:hover {
+    color: #F70;
+    padding: 0 13px;
+    background: #FFFFDF;
+    border: 1px solid #FFCA95;
+}
+.tabs__caption .active {
+    color: #444;
+    background: #EFEFEF;
+    padding: 0 13px 2px;
+    border: 1px solid #D4D4D4;
+    border-bottom: 1px solid #EFEFEF;
+}
+.tabs__content {
+    display: none;
+    border: 1px solid #D4D4D4;
+    border-width: 0 1px 1px;
+    background: #EFEFEF;
+    padding: 0 12px;
+}

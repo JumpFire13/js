@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>ДЗ № 5</title>
+    <script type="text/javascript" src="jquery-2.2.3.min.js"></script>
+    <script type="text/javascript">
+    (function ($) {
+        $(function () {
+            $('#form').on('submit', function(event) { //использую submit чтобы срабатывал встроенный обработчик форм и работал атрибут require у элементов формы
+                $.post('validator.php', $('#form').serialize(),function(data) {
+                    if (data =='false') {
+                        $('#response').html('Введены некорректные данные');
+                    } else {
+                        $('#response').html('Введенные данные корректны');
+                    }
+                })
+                event.preventDefault();
+            })
+        })
+    })(jQuery);
+    </script>
+</head>
+<body>
+<h1>Домашнее задание № 5</h1>
+<form id="form" method="post">
+    <input type="text" name="username" placeholder="Username" required><br>
+    <input type="password" name="password" placeholder="Password" required><br>
+    <input type="email" name="email" placeholder="E-mail" required><br>
+    Gender:<br>
+    <input type="radio" name="gender" value="m" required>Male<br>
+    <input type="radio" name="gender" value="f" required>Female<br>
+    <input type="text" name="credit_card" placeholder="Credit card" required><br>
+    <textarea name="bio" cols="30" rows="10" placeholder="Bio" required></textarea><br>
+    <input type="submit">
+</form>
+<div id="response"></div>
+</body>
+</html>
