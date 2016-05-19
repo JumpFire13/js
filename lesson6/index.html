@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>ДЗ № 6</title>
+    <style type="text/css">
+        .mistake {
+            background-color: red;
+        }
+    </style>
+    <script type="text/javascript" src="jquery-2.2.3.min.js"></script>
+    <script type="text/javascript">
+    (function ($) {
+        $(function () {
+            $('#form').on('submit', function(event) { //использую submit чтобы срабатывал встроенный обработчик форм и работал атрибут required у элементов формы
+                $.post('validator.php', $('#form').serialize(),function(data) {
+                    if(data.result == true) {
+                        $('input, textarea').removeClass('mistake');
+                        $('#response').html('Введенные данные корректны');
+                    } else {
+                        $('input, textarea').removeClass('mistake');
+                        var $article = $('<article />');
+                        $article.append($('<p />').text('Введенные данные не корректны'));
+                        $.each(data.error, function (key, user) {
+                            $article.append($('<p />').text(key + ':' + user));
+                            if (key == 'Credit Card') {
+                                var name = '#Credit_Card';
+                            } else {
+                                var name = '#' + key;
+                            }
+                            $(name).addClass("mistake");
+                        });
+                        $('#response').html($article);
+                    }
+                }, 'json');
+                event.preventDefault();
+            });
+        });
+    })(jQuery);
+    </script>
+</head>
+<body>
+<h1>Домашнее задание № 6</h1>
+<form id="form" method="post">
+    <input type="text" name="username" placeholder="Username" id="Username" required><br>
+    <input type="password" name="password" placeholder="Password" id="Password" required><br>
+    <input type="email" name="email" placeholder="E-mail" id="Email" required><br>
+    Gender:<br>
+    <input type="radio" name="gender" value="m" required>Male<br>
+    <input type="radio" name="gender" value="f" required>Female<br>
+    <input type="text" name="credit_card" placeholder="Credit card" id="Credit_Card" required><br>
+    <textarea name="bio" cols="30" rows="10" placeholder="Bio" id="Bio" required></textarea><br>
+    <input type="submit">
+</form>
+<div id="response"></div>
+</body>
+</html>
