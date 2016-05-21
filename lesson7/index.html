@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>ДЗ № 7</title>
+    <style type="text/css">
+        .mistake {
+            background-color: red;
+        }
+    </style>
+    <script type="text/javascript" src="jquery-2.2.3.min.js"></script>
+    <script type="text/javascript" src="jquery-ui.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="jquery-ui.min.css">
+    <link rel="stylesheet" type="text/css" href="jquery-ui.structure.min.css">
+    <link rel="stylesheet" type="text/css" href="jquery-ui.theme.min.css">
+    <script type="text/javascript">
+    (function ($) {
+        $(function () {
+            $("#progress").progressbar({max: 7});
+            $('[name="birth"]').datepicker({firstDay: 1, dateFormat: "yy-mm-dd"});
+            $( "#response" ).dialog({ autoOpen: false });
+            $('#form').on('submit', function(event) { //использую submit чтобы срабатывал встроенный обработчик форм и работал атрибут required у элементов формы
+                $.post('validator.php', $('#form').serialize(),function(data) {
+                    if(data.result == true) {
+                        $('input, textarea').removeClass('mistake');
+                        $("#progress").progressbar('value', 7);
+                        $('#response').html('Введенные данные корректны').dialog( "open" );
+                    } else {
+                        $('input, textarea').removeClass('mistake');
+                        var num_error = 0;
+                        var $article = $('<article />');
+                        $article.append($('<p />').text('Введенные данные не корректны'));
+                        $.each(data.error, function (key, error) {
+                            $article.append($('<p />').text(key + ':' + error));
+                            var name = key.toLowerCase().replace(' ','_');
+                            $('[name="' + name + '"]').addClass("mistake").effect('shake');
+                            num_error = num_error + 1; //считаем кол-во ошибок, data.error.lenght почему-то не работает
+                        });
+                        $("#progress").progressbar('value', 7 - num_error);
+                        $('#response').html($article).dialog( "open" );
+                    }
+                }, 'json');
+                event.preventDefault();
+            });
+        });
+    })(jQuery);
+    </script>
+</head>
+<body>
+<h1>Домашнее задание № 7</h1>
+<form id="form" method="post">
+    <input type="text" name="username" placeholder="Username" required><br>
+    <input type="password" name="password" placeholder="Password" required><br>
+    <input type="email" name="email" placeholder="E-mail" required><br>
+    Gender:<br>
+    <input type="radio" name="gender" value="m" required>Male<br>
+    <input type="radio" name="gender" value="f" required>Female<br>
+    <input type="text" name="credit_card" placeholder="Credit card" required><br>
+    <input type="text" name="birth" placeholder="Date of birth" required><br>
+    <textarea name="bio" cols="30" rows="10" placeholder="Bio" required></textarea><br>
+    <input type="submit">
+</form>
+<div id="progress"></div>
+<div id="response"></div>
+</body>
+</html>
